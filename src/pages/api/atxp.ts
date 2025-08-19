@@ -11,19 +11,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const client = await atxpClient({
-      mcpServer: "https://browse.mcp.atxp.ai",
+      mcpServer: "https://image.mcp.atxp.ai",
       account: new SolanaAccount(
         process.env.SOLANA_ENDPOINT_URL!,
         process.env.SOLANA_PRIVATE_KEY!,
       ),
     });
 
-    const { query } = req.body;
+    const { prompt } = req.body;
     
     const result = await client.callTool({
-      name: "browse_browse",
+      name: "image_create_image",
       arguments: {
-        query: query || "Why is the sky blue?",
+        prompt: prompt || "Make an image of a RCMP officer as a goose.",
       },
     });
 

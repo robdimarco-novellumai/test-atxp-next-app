@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@atxp/client": "^0.2.7",
+    "@atxp/client": "^0.2.8",
     "envfile": "^7.1.0",
     "fs": "^0.0.1-security",
     "next": "15.4.7",

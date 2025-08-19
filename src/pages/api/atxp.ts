@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import { atxpClient, SolanaAccount } from "@atxp/client";
+import { atxpClient, BaseAccount } from "@atxp/client";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -12,9 +12,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const client = await atxpClient({
       mcpServer: "https://image.mcp.atxp.ai",
-      account: new SolanaAccount(
-        process.env.SOLANA_ENDPOINT_URL!,
-        process.env.SOLANA_PRIVATE_KEY!,
+      account: new BaseAccount(
+        process.env.BASE_RPC!,
+        process.env.BASE_PRIVATE_KEY! as `0x${string}`,
       ),
     });
 
@@ -25,6 +25,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       arguments: {
         prompt: prompt || "Make an image of a RCMP officer as a goose.",
       },
+    }, undefined, {
+      timeout: 180000,
     });
 
     res.status(200).json({ result });

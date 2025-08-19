@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import { atxpClient, ATXPAccount } from "@atxp/client";
+import { atxpClient, SolanaAccount } from "@atxp/client";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -12,7 +12,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const client = await atxpClient({
       mcpServer: "https://browse.mcp.atxp.ai",
-      account: new ATXPAccount(process.env.ATXP_CONNECTION_TOKEN || ""),
+      account: new SolanaAccount(
+        process.env.SOLANA_ENDPOINT_URL!,
+        process.env.SOLANA_PRIVATE_KEY!,
+      ),
     });
 
     const { query } = req.body;

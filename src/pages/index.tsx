@@ -12,6 +12,29 @@ const geistMono = Geist_Mono({
 });
 
 export default function Home() {
+  const onClick = async () => {
+    try {
+      const response = await fetch('/api/atxp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: "Why is the sky blue?",
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('API request failed');
+      }
+      
+      const data = await response.json();
+      console.log(data.result);
+    } catch (error) {
+      console.error('Error calling ATXP:', error);
+    }
+  };
+
   return (
     <div
       className={`${geistSans.className} ${geistMono.className} font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20`}
@@ -35,6 +58,9 @@ export default function Home() {
           </li>
           <li className="tracking-[-.01em]">
             Save and see your changes instantly.
+          </li>
+          <li className="tracking-[-.01em]">
+            <button onClick={onClick}>Click me</button>
           </li>
         </ol>
         <div className="flex gap-4 items-center flex-col sm:flex-row">

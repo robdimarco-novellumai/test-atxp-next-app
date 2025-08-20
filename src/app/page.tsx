@@ -32,7 +32,7 @@ export default function Home() {
     
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 120000); // 2 minute timeout
+      const timeoutId = setTimeout(() => controller.abort(), 180000); // 3 minute timeout
       
       const response = await fetch('/api/atxp', {
         method: 'POST',

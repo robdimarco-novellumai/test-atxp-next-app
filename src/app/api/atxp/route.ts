@@ -1,15 +1,10 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 import { atxpClient, BaseAccount } from "@atxp/client";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
-  }
-
+export async function POST(request: NextRequest) {
   try {
+    const body = await request.json();
+    
     const client = await atxpClient({
       mcpServer: "https://image.mcp.atxp.ai",
       account: new BaseAccount(
@@ -18,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       ),
     });
 
-    const { prompt } = req.body;
+    const { prompt } = body;
     
     const result = await client.callTool({
       name: "image_create_image",
@@ -29,9 +24,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       timeout: 180000,
     });
 
-    res.status(200).json({ result });
+    return NextResponse.json({ result });
   } catch (error) {
     console.error('ATXP API error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
   }
 }
